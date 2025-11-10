@@ -17,8 +17,7 @@ export default function HostelDashboard() {
   const [darkMode, setDarkMode] = useState(false);
   const [creatorInfo, setCreatorInfo] = useState(null);
   const [showCreatorModal, setShowCreatorModal] = useState(false);
-
-  // Realtime Firestore listener for orders
+  
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "orders"), (snapshot) => {
       const fetchedOrders = snapshot.docs.map((doc) => ({
@@ -30,7 +29,7 @@ export default function HostelDashboard() {
     return () => unsub();
   }, []);
 
-  // Create new order
+  //neworder 
   const handleCreateOrder = async () => {
     const minutes = parseInt(timeLimit, 10);
     if (!orderName.trim() || isNaN(minutes) || minutes <= 0) {
@@ -48,11 +47,11 @@ export default function HostelDashboard() {
       timeLimit: minutes,
       createdAt: serverTimestamp(),
 
-      // 🔗 Who created it
+      //creator
       createdById: user?.uid,
       createdByName: user?.displayName || "Anonymous",
 
-      // 🏨 Which hostel it belongs to
+      
       hostelId: hostelId
     });
 
@@ -82,8 +81,6 @@ export default function HostelDashboard() {
     }
   };
 
-
-  // Count active group orders (example)
   useEffect(() => {
     if (!hostelId) return;
 
@@ -137,7 +134,7 @@ export default function HostelDashboard() {
         {orders
           .filter((order) => order.status === "Pending")
           .map((order) => {
-            // ✅ Calculate remaining time inside map
+            // clock
             const createdAtMs = order.createdAt?.toMillis ? order.createdAt.toMillis() : order.createdAt;
             const elapsedSeconds = (Date.now() - createdAtMs) / 1000;
             const remainingSeconds = Math.max(0, order.timeLimit * 60 - elapsedSeconds);
@@ -204,3 +201,4 @@ export default function HostelDashboard() {
     </div>
   );
 }
+
