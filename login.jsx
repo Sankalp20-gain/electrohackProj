@@ -11,8 +11,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  // OTP states
+ 
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -43,7 +42,7 @@ export default function Login() {
   };
 
   // OTP Login - Send Code
-  const sendOtp = async () => { //proper setup to login with phone number
+  const sendOtp = async () => {  
     setError("");
     setMessage("");
     setLoading(true);
@@ -80,14 +79,14 @@ const verifyOtp = async () => {
     const user = result.user;
     let phoneNumber = user.phoneNumber;
 
-    // 🔧 Remove +91 prefix if present
+    
     if (phoneNumber.startsWith("+91")) {
       phoneNumber = phoneNumber.substring(3);
     }
 
     console.log("✅ Normalized phoneNumber:", phoneNumber);
 
-    // 🔍 Check Firestore for user with this mobile number
+  
     const q = query(collection(db, "users"), where("mobile", "==", phoneNumber));
     const querySnapshot = await getDocs(q);
 
@@ -217,3 +216,4 @@ const verifyOtp = async () => {
     </div>
   );
 }
+
