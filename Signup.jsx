@@ -27,7 +27,7 @@ export default function Signup() {
   const [confirmationResult, setConfirmationResult] = useState(null);
   const navigate = useNavigate();
 
-  // reCAPTCHA setup
+  
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
@@ -73,7 +73,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      // 1️⃣ Check duplicate rollNumber
+       
       const rollRef = doc(db, "rollNumbers", formData.rollNumber);
       const rollSnap = await getDoc(rollRef);
       if (rollSnap.exists()) {
@@ -82,26 +82,25 @@ export default function Signup() {
         return;
       }
 
-      // 2️⃣ Create account with dummy email (rollNumber)
+      
       const userCred = await createUserWithEmailAndPassword(
         auth,
         `${formData.rollNumber}@dummy.com`,
         formData.password
       );
-
-      // 3️⃣ Save user data in Firestore
+ 
       await setDoc(doc(db, "users", userCred.user.uid), {
         ...formData,
         createdAt: new Date(),
       });
 
-      // 4️⃣ Save rollNumber mapping
+      
       await setDoc(doc(db, "rollNumbers", formData.rollNumber), {
         uid: userCred.user.uid,
       });
 
       alert("Signup successful! Now verifying your phone number...");
-      await sendOTP(); // send OTP automatically after signup
+      await sendOTP();  
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -160,7 +159,7 @@ export default function Signup() {
             required
           />
 
-          {/* Password with Toggle */}
+        
           <div className="relative">
             <input
               className="w-full border border-gray-300 rounded-lg p-3 pr-12"
@@ -221,3 +220,4 @@ export default function Signup() {
     </div>
   );
 }
+
