@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { db, app } from "../utils/firebase"; // ensure db is exported from firebase.js
+import { db, app } from "../utils/firebase"; 
 
 const AuthContext = createContext();
 
@@ -13,13 +13,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        // Try to get extra user info from Firestore
         try {
           const docRef = doc(db, "users", currentUser.uid);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            // Merge Firestore user data with auth user object
             setUser({ ...currentUser, ...docSnap.data() });
           } else {
             setUser(currentUser);
@@ -50,3 +48,4 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
+
