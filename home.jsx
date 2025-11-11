@@ -40,7 +40,7 @@ export default function Home() {
       if (!user) return;
 
       try {
-        // 1️⃣ If phone login
+        
         if (user.phoneNumber) {
           let phone = user.phoneNumber;
           if (phone.startsWith("+91")) phone = phone.substring(3);
@@ -56,7 +56,7 @@ export default function Home() {
           }
         }
 
-        // 2️⃣ Fallback to UID lookup (email-based)
+      
         const ref = doc(db, "users", user.uid);
         const snap = await getDoc(ref);
         if (snap.exists()) {
@@ -66,8 +66,7 @@ export default function Home() {
             return;
           }
         }
-
-        // 3️⃣ Fallback if no name
+ 
         setInitial(
           user.displayName?.charAt(0).toUpperCase() ||
             user.email?.charAt(0).toUpperCase() ||
@@ -168,7 +167,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Centered Video */}
+    
       <div className="flex justify-center items-center mt-12">
         <video
           ref={videoRef}
@@ -184,3 +183,4 @@ export default function Home() {
     </div>
   );
 }
+
